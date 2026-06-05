@@ -2,6 +2,20 @@ from typing import List
 
 
 def ignore_dir(contents: dict[str, list], ignore: List[str]) -> dict[str, list]:
+    """
+    Filter out ignored directories and files from the synchronization contents.
+
+    This function iterates through the provided contents dictionary and removes
+    any directory or file paths that contain a folder specified in the ignore list.
+
+    Args:
+        contents (dict[str, list]): A dictionary containing lists of relative paths
+            for directories ('is_dir') and files ('is_file').
+        ignore (List[str]): A list of directory names to ignore.
+
+    Returns:
+        dict[str, list]: The modified contents dictionary with ignored paths removed.
+    """
 
     # is_dir
     index = 0

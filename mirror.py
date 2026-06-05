@@ -12,6 +12,18 @@ from utils.validate import validate_source_mirror
 
 
 def sync_mirror(source_path: Path, mirror_path: Path, ignore: List[str]) -> None:
+    """
+    Synchronize the contents of the mirror directory to match the source directory.
+
+    This function performs update, send (copy), and delete actions to ensure
+    the mirror directory becomes an exact replica of the source directory,
+    excluding any ignored directories.
+
+    Args:
+        source_path (Path): The path of the source directory.
+        mirror_path (Path): The path of the mirror directory.
+        ignore (List[str]): A list of directory names to ignore during synchronization.
+    """
 
     if not validate_source_mirror(source_path=source_path, mirror_path=mirror_path):
         return

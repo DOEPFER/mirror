@@ -2,6 +2,16 @@ from pathlib import Path
 
 
 def contents(path: Path) -> dict[str, list]:
+    """
+    Retrieve the contents of a directory, separated by files and directories.
+
+    Args:
+        path (Path): The base path to scan for contents.
+
+    Returns:
+        dict[str, list]: A dictionary containing lists of relative paths for
+            directories ('is_dir') and files ('is_file').
+    """
     is_dir = []
     is_file = []
 

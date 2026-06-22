@@ -1,4 +1,5 @@
 import logging
+import secrets
 import sys
 import time
 from datetime import datetime, timezone
@@ -21,7 +22,8 @@ def setup_logging(logprefix: str = "mirror", verbose: bool = False) -> Logger:
     log_dir.mkdir(parents=True, exist_ok=True)
 
     date = datetime.now(timezone.utc)
-    log_filename = f"{logprefix}_{date:%Y_%m_%d}.log"
+    short_hash = secrets.token_hex(4)
+    log_filename = f"{logprefix}_{date:%Y_%m_%d_%H_%M_%S}_{short_hash}.log"
     log_file_path = log_dir / log_filename
 
     handlers = (

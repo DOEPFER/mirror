@@ -2,6 +2,8 @@ import logging
 import shutil
 from pathlib import Path
 
+from utils.hash import generate_hash
+
 logger = logging.getLogger(__name__)
 
 
@@ -42,12 +44,15 @@ def update(source_path: Path, mirror_path: Path, contents: dict[str, set]) -> No
     for content in contents["is_file"]:
         source = source_path / content
         mirror = mirror_path / content
+        temporary = mirror.with_suffix(mirror.suffix + ".tmp")
 
         try:
             if source.stat().st_mtime_ns != mirror.stat().st_mtime_ns:
                 try:
                     logger.info(msg=f"> {mirror} | FILE")
-                    source.copy(mirror, preserve_metadata=True)
+                    source.copy(temporary, preserve_metadata=True)
+                    if generate_hash(source) == generate_hash(file=temporary):
+                        temporary.replace(mirror)
                 except Exception as e:
                     logger.error(msg=f"\tERROR | {mirror}")
                     logger.error(msg=f"\t{e}")

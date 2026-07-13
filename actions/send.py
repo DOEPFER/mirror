@@ -20,8 +20,8 @@ def send(source_path: Path, mirror_path: Path, contents: dict[str, set]) -> None
 
     # is_dir
     for content in contents["is_dir"]:
-        source = source_path / content
-        mirror = mirror_path / content
+        source: Path = source_path / content
+        mirror: Path = mirror_path / content
 
         try:
             logger.info(msg=f"+ {mirror} | DIRECTORY")
@@ -34,15 +34,17 @@ def send(source_path: Path, mirror_path: Path, contents: dict[str, set]) -> None
 
     # is_file
     for content in contents["is_file"]:
-        source = source_path / content
-        mirror = mirror_path / content
-        temporary = mirror.with_suffix(mirror.suffix + ".tmp")
+        source: Path = source_path / content
+        mirror: Path = mirror_path / content
+        temporary: Path = mirror.with_suffix(mirror.suffix + ".tmp")
 
         try:
             logger.info(msg=f"+ {mirror} | FILE")
             source.copy(temporary, preserve_metadata=True)
-            if generate_hash(source) == generate_hash(file=temporary):
+            if generate_hash(file=source) == generate_hash(file=temporary):
                 temporary.replace(mirror)
+            else:
+                temporary.unlink()
         except Exception as e:
             logger.error(msg=f"\tERROR | {mirror}")
             logger.error(msg=f"\t{e}")
